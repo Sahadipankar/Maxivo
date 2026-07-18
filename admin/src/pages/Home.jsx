@@ -13,12 +13,20 @@ function Home() {
 
   const { serverUrl } = useContext(authDataContext)
 
+  const getAuthConfig = () => {
+    const adminToken = localStorage.getItem("adminToken")
+    return {
+      withCredentials: true,
+      headers: adminToken ? { Authorization: `Bearer ${adminToken}` } : {}
+    }
+  }
+
   const fetchCounts = async () => {
     try {
-      const products = await axios.get(`${serverUrl}/api/product/list`, {}, { withCredentials: true })
+      const products = await axios.get(`${serverUrl}/api/product/list`, getAuthConfig())
       setTotalProducts(products.data.length)
 
-      const orders = await axios.post(`${serverUrl}/api/order/list`, {}, { withCredentials: true })
+      const orders = await axios.post(`${serverUrl}/api/order/list`, {}, getAuthConfig())
       setTotalOrders(orders.data.length)
     } catch (err) {
       console.error("Failed to fetch counts", err)
