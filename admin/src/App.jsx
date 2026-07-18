@@ -5,7 +5,7 @@ import Add from './pages/Add'
 import Lists from './pages/Lists'
 import Orders from './pages/Orders'
 import Login from './pages/Login'
-import { adminDataContext } from './context/AdminContext'
+import { adminDataContext } from './context/adminDataContext'
 import { ToastContainer, toast } from 'react-toastify';
 
 function App() {

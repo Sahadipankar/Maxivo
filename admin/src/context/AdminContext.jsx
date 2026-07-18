@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { authDataContext } from './AuthContext'
+import { adminDataContext as AdminDataContext } from './adminDataContext'
 import axios from 'axios'
 
-export const adminDataContext = createContext()
 function AdminContext({ children }) {
   let [adminData, setAdminData] = useState(null)
   let { serverUrl } = useContext(authDataContext)
 
 
-  const getAdmin = async () => {
+  const getAdmin = useCallback(async () => {
     try {
       const adminToken = localStorage.getItem("adminToken")
       if (!adminToken) {
@@ -21,16 +21,15 @@ function AdminContext({ children }) {
       })
 
       setAdminData(result.data)
-      console.log(result.data)
     } catch (error) {
       setAdminData(null)
       console.log(error)
     }
-  }
+  }, [serverUrl])
 
   useEffect(() => {
     getAdmin()
-  }, [serverUrl])
+  }, [getAdmin])
 
 
   let value = {
@@ -38,9 +37,9 @@ function AdminContext({ children }) {
   }
   return (
     <div>
-      <adminDataContext.Provider value={value}>
+      <AdminDataContext.Provider value={value}>
         {children}
-      </adminDataContext.Provider>
+      </AdminDataContext.Provider>
 
     </div>
   )

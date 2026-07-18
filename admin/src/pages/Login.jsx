@@ -4,7 +4,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { IoEye } from "react-icons/io5";
 import axios from 'axios'
 import { authDataContext } from '../context/AuthContext';
-import { adminDataContext } from '../context/AdminContext';
+import { adminDataContext } from '../context/adminDataContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -22,7 +22,6 @@ function Login() {
     e.preventDefault()
     try {
       const result = await axios.post(serverUrl + '/api/auth/adminlogin', { email, password }, { withCredentials: true })
-      console.log(result.data)
       localStorage.setItem("adminToken", result.data)
       toast.success("AdminLogin Successfully")
       getAdmin()
