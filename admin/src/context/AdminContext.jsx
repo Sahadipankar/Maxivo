@@ -25,21 +25,21 @@ function AdminContext({ children }) {
   }
 
   useEffect(() => {
+    getAdmin()
   }, [serverUrl])
-}, [])
 
 
-let value = {
-  adminData, setAdminData, getAdmin
-}
-return (
-  <div>
-    <adminDataContext.Provider value={value}>
-      {children}
-    </adminDataContext.Provider>
+  let value = {
+    adminData, setAdminData, getAdmin
+  }
+  return (
+    <div>
+      <adminDataContext.Provider value={value}>
+        {children}
+      </adminDataContext.Provider>
 
-  </div>
-)
+    </div>
+  )
 }
 
 export default AdminContext
