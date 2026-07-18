@@ -23,6 +23,10 @@ function Home() {
 
   const fetchCounts = async () => {
     try {
+      const adminToken = localStorage.getItem("adminToken")
+      if (!adminToken) {
+        return
+      }
       const products = await axios.get(`${serverUrl}/api/product/list`, getAuthConfig())
       setTotalProducts(products.data.length)
 
@@ -35,7 +39,7 @@ function Home() {
 
   useEffect(() => {
     fetchCounts()
-  }, [])
+  }, [serverUrl])
   return (
 
     <div className='w-[100vw] h-[100vh] bg-gradient-to-l from-[#141414] to-[#0c2025] text-[white] relative'>
