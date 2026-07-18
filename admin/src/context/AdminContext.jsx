@@ -10,7 +10,11 @@ function AdminContext({ children }) {
 
   const getAdmin = async () => {
     try {
-      let result = await axios.get(serverUrl + "/api/user/getadmin", { withCredentials: true })
+      const adminToken = localStorage.getItem("adminToken")
+      let result = await axios.get(serverUrl + "/api/user/getadmin", {
+        withCredentials: true,
+        headers: adminToken ? { Authorization: `Bearer ${adminToken}` } : {}
+      })
 
       setAdminData(result.data)
       console.log(result.data)
@@ -21,21 +25,21 @@ function AdminContext({ children }) {
   }
 
   useEffect(() => {
-    getAdmin()
-  }, [])
+  }, [serverUrl])
+}, [])
 
 
-  let value = {
-    adminData, setAdminData, getAdmin
-  }
-  return (
-    <div>
-      <adminDataContext.Provider value={value}>
-        {children}
-      </adminDataContext.Provider>
+let value = {
+  adminData, setAdminData, getAdmin
+}
+return (
+  <div>
+    <adminDataContext.Provider value={value}>
+      {children}
+    </adminDataContext.Provider>
 
-    </div>
-  )
+  </div>
+)
 }
 
 export default AdminContext

@@ -13,7 +13,7 @@ function Login() {
   let [email, setEmail] = useState("")
   let [password, setPassword] = useState("")
   let { serverUrl } = useContext(authDataContext)
-  let { adminData, getAdmin } = useContext(adminDataContext)
+  let { getAdmin } = useContext(adminDataContext)
   let navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
@@ -23,6 +23,7 @@ function Login() {
     try {
       const result = await axios.post(serverUrl + '/api/auth/adminlogin', { email, password }, { withCredentials: true })
       console.log(result.data)
+      localStorage.setItem("adminToken", result.data)
       toast.success("AdminLogin Successfully")
       getAdmin()
       navigate("/")
@@ -56,7 +57,9 @@ function Login() {
             <input type={show ? "text" : "password"} className='w-[100%] h-[50px] border-[2px] border-[#96969635] backdrop:blur-sm rounded-lg shadow-lg bg-transparent placeholder-[#ffffffc7] px-[20px] font-semibold' placeholder='Password' required onChange={(e) => setPassword(e.target.value)} value={password} />
             {!show && <IoEyeOutline className='w-[20px] h-[20px] cursor-pointer absolute right-[5%] bottom-[50%]' onClick={() => setShow(prev => !prev)} />}
             {show && <IoEye className='w-[20px] h-[20px] cursor-pointer absolute right-[5%] bottom-[50%]' onClick={() => setShow(prev => !prev)} />}
-            <button className='w-[100%] h-[50px] bg-[#6060f5] rounded-lg flex items-center justify-center mt-[20px] text-[17px] font-semibold'>Login</button>
+            <button disabled={loading} className='w-[100%] h-[50px] bg-[#6060f5] rounded-lg flex items-center justify-center mt-[20px] text-[17px] font-semibold disabled:opacity-70'>
+              {loading ? "Logging in..." : "Login"}
+            </button>
 
           </div>
         </form>
