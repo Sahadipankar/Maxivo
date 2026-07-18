@@ -31,7 +31,7 @@ function Login() {
             let result = await axios.post(serverUrl + '/api/auth/login', {
                 email, password
             }, { withCredentials: true })
-            console.log(result.data)
+            localStorage.setItem("userToken", result.data.token)
             localStorage.setItem("sessionActive", "true")
             setLoading(false)
             getCurrentUser()
@@ -51,7 +51,7 @@ function Login() {
             let email = user.email
 
             const result = await axios.post(serverUrl + "/api/auth/googlelogin", { name, email }, { withCredentials: true })
-            console.log(result.data)
+            localStorage.setItem("userToken", result.data.token)
             localStorage.setItem("sessionActive", "true")
             getCurrentUser()
             navigate("/")

@@ -14,7 +14,11 @@ function UserContext({ children }) {
         setUserData(null)
         return
       }
-      let result = await axios.get(serverUrl + "/api/user/getcurrentuser", { withCredentials: true })
+      const userToken = localStorage.getItem("userToken")
+      let result = await axios.get(serverUrl + "/api/user/getcurrentuser", {
+        withCredentials: true,
+        headers: userToken ? { Authorization: `Bearer ${userToken}` } : {}
+      })
 
       setUserData(result.data)
 

@@ -20,7 +20,6 @@ function ShopContext({ children }) {
   const getProducts = async () => {
     try {
       let result = await axios.get(serverUrl + "/api/product/list")
-      console.log(result.data)
       setProducts(result.data)
     } catch (error) {
       console.log(error)
@@ -54,8 +53,11 @@ function ShopContext({ children }) {
     if (userData) {
       setLoading(true)
       try {
-        let result = await axios.post(serverUrl + "/api/cart/add", { itemId, size }, { withCredentials: true })
-        console.log(result.data)
+        const userToken = localStorage.getItem("userToken")
+        let result = await axios.post(serverUrl + "/api/cart/add", { itemId, size }, {
+          withCredentials: true,
+          headers: userToken ? { Authorization: `Bearer ${userToken}` } : {}
+        })
         toast.success("Product Added")
         setLoading(false)
 
@@ -79,7 +81,11 @@ function ShopContext({ children }) {
         setCartItem({})
         return
       }
-      const result = await axios.post(serverUrl + '/api/cart/get', {}, { withCredentials: true })
+      const userToken = localStorage.getItem("userToken")
+      const result = await axios.post(serverUrl + '/api/cart/get', {}, {
+        withCredentials: true,
+        headers: userToken ? { Authorization: `Bearer ${userToken}` } : {}
+      })
 
       setCartItem(result.data)
     } catch (error) {
@@ -97,7 +103,11 @@ function ShopContext({ children }) {
 
     if (userData) {
       try {
-        await axios.post(serverUrl + "/api/cart/update", { itemId, size, quantity }, { withCredentials: true })
+        const userToken = localStorage.getItem("userToken")
+        await axios.post(serverUrl + "/api/cart/update", { itemId, size, quantity }, {
+          withCredentials: true,
+          headers: userToken ? { Authorization: `Bearer ${userToken}` } : {}
+        })
       } catch (error) {
         console.log(error)
 

@@ -32,11 +32,11 @@ function Registration() {
             const result = await axios.post(serverUrl + '/api/auth/registration', {
                 name, email, password
             }, { withCredentials: true })
+            localStorage.setItem("userToken", result.data.token)
             localStorage.setItem("sessionActive", "true")
             getCurrentUser()
             navigate("/")
             toast.success("User Registration Successful")
-            console.log(result.data)
             setLoading(false)
 
         } catch (error) {
@@ -53,7 +53,7 @@ function Registration() {
             let email = user.email
 
             const result = await axios.post(serverUrl + "/api/auth/googlelogin", { name, email }, { withCredentials: true })
-            console.log(result.data)
+            localStorage.setItem("userToken", result.data.token)
             localStorage.setItem("sessionActive", "true")
             getCurrentUser()
             navigate("/")
