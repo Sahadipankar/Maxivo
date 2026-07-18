@@ -10,11 +10,11 @@ function UserContext({ children }) {
 
   const getCurrentUser = async () => {
     try {
-      if (localStorage.getItem("sessionActive") !== "true") {
+      const userToken = localStorage.getItem("userToken")
+      if (localStorage.getItem("sessionActive") !== "true" || !userToken) {
         setUserData(null)
         return
       }
-      const userToken = localStorage.getItem("userToken")
       let result = await axios.get(serverUrl + "/api/user/getcurrentuser", {
         withCredentials: true,
         headers: userToken ? { Authorization: `Bearer ${userToken}` } : {}
@@ -24,6 +24,8 @@ function UserContext({ children }) {
 
     } catch (error) {
       setUserData(null)
+      localStorage.removeItem("sessionActive")
+      localStorage.removeItem("userToken")
     }
   }
 

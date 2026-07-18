@@ -77,11 +77,11 @@ function ShopContext({ children }) {
 
   const getUserCart = async () => {
     try {
-      if (localStorage.getItem("sessionActive") !== "true") {
+      const userToken = localStorage.getItem("userToken")
+      if (localStorage.getItem("sessionActive") !== "true" || !userToken) {
         setCartItem({})
         return
       }
-      const userToken = localStorage.getItem("userToken")
       const result = await axios.post(serverUrl + '/api/cart/get', {}, {
         withCredentials: true,
         headers: userToken ? { Authorization: `Bearer ${userToken}` } : {}
@@ -90,6 +90,8 @@ function ShopContext({ children }) {
       setCartItem(result.data)
     } catch (error) {
       setCartItem({})
+      localStorage.removeItem("sessionActive")
+      localStorage.removeItem("userToken")
 
 
 
