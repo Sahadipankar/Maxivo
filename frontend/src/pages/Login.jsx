@@ -11,6 +11,7 @@ import axios from 'axios';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../utils/Firebase';
 import { userDataContext } from '../context/UserContext';
+import { toast } from 'react-toastify';
 import Loading from '../component/Loading';
 
 function Login() {
@@ -31,6 +32,7 @@ function Login() {
                 email, password
             }, { withCredentials: true })
             console.log(result.data)
+            localStorage.setItem("sessionActive", "true")
             setLoading(false)
             getCurrentUser()
             navigate("/")
@@ -50,6 +52,7 @@ function Login() {
 
             const result = await axios.post(serverUrl + "/api/auth/googlelogin", { name, email }, { withCredentials: true })
             console.log(result.data)
+            localStorage.setItem("sessionActive", "true")
             getCurrentUser()
             navigate("/")
 

@@ -10,20 +10,22 @@ function UserContext({ children }) {
 
   const getCurrentUser = async () => {
     try {
+      if (localStorage.getItem("sessionActive") !== "true") {
+        setUserData(null)
+        return
+      }
       let result = await axios.get(serverUrl + "/api/user/getcurrentuser", { withCredentials: true })
 
       setUserData(result.data)
-      console.log(result.data)
 
     } catch (error) {
       setUserData(null)
-      console.log(error)
     }
   }
 
   useEffect(() => {
     getCurrentUser()
-  }, [])
+  }, [serverUrl])
 
 
 

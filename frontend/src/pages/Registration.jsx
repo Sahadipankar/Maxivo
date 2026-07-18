@@ -32,6 +32,7 @@ function Registration() {
             const result = await axios.post(serverUrl + '/api/auth/registration', {
                 name, email, password
             }, { withCredentials: true })
+            localStorage.setItem("sessionActive", "true")
             getCurrentUser()
             navigate("/")
             toast.success("User Registration Successful")
@@ -53,6 +54,7 @@ function Registration() {
 
             const result = await axios.post(serverUrl + "/api/auth/googlelogin", { name, email }, { withCredentials: true })
             console.log(result.data)
+            localStorage.setItem("sessionActive", "true")
             getCurrentUser()
             navigate("/")
             toast.success("User Registration Successful")

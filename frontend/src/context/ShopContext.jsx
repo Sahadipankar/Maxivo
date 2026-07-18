@@ -75,11 +75,15 @@ function ShopContext({ children }) {
 
   const getUserCart = async () => {
     try {
+      if (localStorage.getItem("sessionActive") !== "true") {
+        setCartItem({})
+        return
+      }
       const result = await axios.post(serverUrl + '/api/cart/get', {}, { withCredentials: true })
 
       setCartItem(result.data)
     } catch (error) {
-      console.log(error)
+      setCartItem({})
 
 
 
@@ -141,7 +145,7 @@ function ShopContext({ children }) {
 
   useEffect(() => {
     getUserCart()
-  }, [])
+  }, [serverUrl])
 
 
 
