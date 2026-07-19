@@ -13,7 +13,6 @@ function Lists() {
     try {
       let result = await axios.get(serverUrl + "/api/product/list")
       setList(result.data)
-      console.log(result.data)
     } catch (error) {
       console.log(error)
     }

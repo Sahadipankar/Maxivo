@@ -27,6 +27,12 @@ function Add() {
     setLoading(true)
     e.preventDefault()
     try {
+      if (!image1) {
+        toast.error("Please upload at least 1 product image")
+        setLoading(false)
+        return
+      }
+
       let formData = new FormData()
       formData.append("name", name)
       formData.append("description", description)
@@ -35,14 +41,14 @@ function Add() {
       formData.append("subCategory", subCategory)
       formData.append("bestseller", bestseller)
       formData.append("sizes", JSON.stringify(sizes))
-      formData.append("image1", image1)
-      formData.append("image2", image2)
-      formData.append("image3", image3)
-      formData.append("image4", image4)
+
+      if (image1) formData.append("image1", image1)
+      if (image2) formData.append("image2", image2)
+      if (image3) formData.append("image3", image3)
+      if (image4) formData.append("image4", image4)
 
       let result = await axios.post(serverUrl + "/api/product/addproduct", formData, { withCredentials: true })
 
-      console.log(result.data)
       toast.success("ADD Product Successfully")
       setLoading(false)
 
@@ -86,22 +92,22 @@ function Add() {
             <div className='w-[100%] h-[100%] flex items-center justify-start '>
               <label htmlFor="image1" className=' w-[65px] h-[65px] md:w-[100px] md:h-[100px] cursor-pointer hover:border-[#46d1f7]'>
                 <img src={!image1 ? upload : URL.createObjectURL(image1)} alt="" className='w-[80%] h-[80%] rounded-lg shadow-2xl hover:border-[#1d1d1d] border-[2px]' />
-                <input type="file" id='image1' hidden onChange={(e) => setImage1(e.target.files[0])} required />
+                <input type="file" id='image1' hidden onChange={(e) => setImage1(e.target.files[0])} />
 
               </label>
               <label htmlFor="image2" className=' w-[65px] h-[65px] md:w-[100px] md:h-[100px] cursor-pointer hover:border-[#46d1f7]'>
                 <img src={!image2 ? upload : URL.createObjectURL(image2)} alt="" className='w-[80%] h-[80%] rounded-lg shadow-2xl hover:border-[#1d1d1d] border-[2px]' />
-                <input type="file" id='image2' hidden onChange={(e) => setImage2(e.target.files[0])} required />
+                <input type="file" id='image2' hidden onChange={(e) => setImage2(e.target.files[0])} />
 
               </label>
               <label htmlFor="image3" className=' w-[65px] h-[65px] md:w-[100px] md:h-[100px] cursor-pointer hover:border-[#46d1f7]'>
                 <img src={!image3 ? upload : URL.createObjectURL(image3)} alt="" className='w-[80%] h-[80%] rounded-lg shadow-2xl hover:border-[#1d1d1d] border-[2px]' />
-                <input type="file" id='image3' hidden onChange={(e) => setImage3(e.target.files[0])} required />
+                <input type="file" id='image3' hidden onChange={(e) => setImage3(e.target.files[0])} />
 
               </label>
               <label htmlFor="image4" className=' w-[65px] h-[65px] md:w-[100px] md:h-[100px] cursor-pointer hover:border-[#46d1f7]'>
                 <img src={!image4 ? upload : URL.createObjectURL(image4)} alt="" className='w-[80%] h-[80%] rounded-lg shadow-2xl hover:border-[#1d1d1d] border-[2px]' />
-                <input type="file" id='image4' hidden onChange={(e) => setImage4(e.target.files[0])} required />
+                <input type="file" id='image4' hidden onChange={(e) => setImage4(e.target.files[0])} />
 
               </label>
 

@@ -16,14 +16,19 @@ const uploadOnCloudinary = async (filePath) => {
             (filePath, {
                 folder: 'Maxivo',
             })
-        fs.unlinkSync(filePath)
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath)
+        }
         return uploadResult.secure_url
 
 
 
     } catch (error) {
-        fs.unlinkSync(filePath)
-        console.log(error)
+        if (filePath && fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath)
+        }
+        console.log("Cloudinary upload error", error)
+        throw error
     }
 
 }
