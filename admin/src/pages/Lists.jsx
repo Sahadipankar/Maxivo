@@ -22,7 +22,15 @@ function Lists() {
   const removeList = async (id) => {
 
     try {
-      let result = await axios.post(`${serverUrl}/api/product/remove/${id}`, {}, { withCredentials: true })
+      const adminToken = localStorage.getItem("adminToken")
+      let result = await axios.post(
+        `${serverUrl}/api/product/remove/${id}`,
+        {},
+        {
+          withCredentials: true,
+          headers: adminToken ? { Authorization: `Bearer ${adminToken}` } : {}
+        }
+      )
 
       if (result.data) {
         fetchList()
