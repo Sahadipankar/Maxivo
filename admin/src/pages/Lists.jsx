@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Nav from '../component/Nav'
 import Sidebar from '../component/Sidebar'
 import { authDataContext } from '../context/AuthContext'
@@ -9,15 +9,14 @@ function Lists() {
   let { serverUrl } = useContext(authDataContext)
 
 
-  const fetchList = async () => {
+  const fetchList = useCallback(async () => {
     try {
       let result = await axios.get(serverUrl + "/api/product/list")
       setList(result.data)
     } catch (error) {
       console.log(error)
     }
-
-  }
+  }, [serverUrl])
 
   const removeList = async (id) => {
 
@@ -46,7 +45,7 @@ function Lists() {
 
   useEffect(() => {
     fetchList()
-  }, [])
+  }, [fetchList])
   return (
     <div className='w-[100vw] min-h-[100vh] bg-gradient-to-l from-[#141414] to-[#0c2025] text-[white]'>
       <Nav />
